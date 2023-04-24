@@ -26,7 +26,8 @@ func (userDAO UserDAO) GetById(id int64) *model.User {
 	return &user
 }
 
-func (userDAO UserDAO) Save(user *model.User) uint {
+// SaveOrUpdate 根据主键 ID /*
+func (userDAO UserDAO) SaveOrUpdate(user *model.User) uint {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	user.Deleted = 0
