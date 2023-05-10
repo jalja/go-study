@@ -13,4 +13,5 @@ func main() {
 }
 func registerUserRouter(router *gin.Engine) {
 	new(controller.UserController).Router(router)
+	new(controller.HttpController).Router(router)
 }
