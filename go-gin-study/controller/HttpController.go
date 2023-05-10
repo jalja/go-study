@@ -54,5 +54,5 @@ func (hc *HttpController) postTest(context *gin.Context) {
 		fmt.Println("http 解析异常")
 		return
 	}
-	tools.Log.Error("getTest=", string(by))
+	tools.Log.Error("postTest=", string(by))
 }
