@@ -3,8 +3,6 @@ package dao
 import (
 	"go-short-url/config"
 	"go-short-url/model/entity"
-	"go-short-url/model/param"
-	"time"
 )
 
 type ShortUrlDAO struct {
@@ -22,22 +20,14 @@ type ShortUrlDAO struct {
 */
 func (shortDAO ShortUrlDAO) GetBySHortUrl(shortUrl string) *entity.ShortUrlEntity {
 	var urlEntity entity.ShortUrlEntity
-	config.DB.Find(&urlEntity, shortUrl)
+	config.DB.Where("short_url=?", shortUrl).First(&urlEntity)
 	return &urlEntity
 }
 
-func (shortDAO ShortUrlDAO) AddOrUpdate(update *param.UpdateShortUrlParam) {
-	var urlEntity entity.ShortUrlEntity
-	urlEntity.Deleted = 0
-	urlEntity.UpdatedAt = time.Now()
-	urlEntity.NativeUrl = update.NativeUrl
-	urlEntity.ShortUrl = update.ShortUrl
-	urlEntity.ValidTime = update.ValidTime
-	if update.Id != 0 {
-		urlEntity.ID = update.Id
-		config.DB.Updates(&urlEntity)
-		return
+func (shortDAO ShortUrlDAO) AddOrUpdate(shortUrl *entity.ShortUrlEntity) {
+	if shortUrl.ID == 0 {
+		config.DB.Save(shortUrl)
+	} else {
+		config.DB.Updates(shortUrl)
 	}
-	urlEntity.CreatedAt = time.Now()
-	config.DB.Save(&urlEntity)
 }
