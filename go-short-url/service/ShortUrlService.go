@@ -25,7 +25,7 @@ func (service ShortUrlService) AddOrUpdate(update *param.UpdateShortUrlParam) st
 	return urlEntity.ShortUrl
 }
 
-func (service ShortUrlService) GetByShortUrl(shortUrl string) (string, error) {
+func (service ShortUrlService) Redirect(shortUrl string) (string, error) {
 	shortEntity := dao.ShortUrlDAO{}.GetBySHortUrl(shortUrl)
 	if shortEntity == nil {
 		return "", errors.New("该短地址不存在")
