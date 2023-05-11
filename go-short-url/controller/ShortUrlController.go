@@ -31,9 +31,9 @@ func (short *ShortUrlController) addOrUpdate(context *gin.Context) {
 
 /** 根据短地址查询实际地址并重定向 **/
 func (short *ShortUrlController) turnUrl(context *gin.Context) {
-	nativeUrl := service.ShortUrlService{}.GetByShortUrl(context.Param("url"))
-	if nativeUrl == "" {
-		context.JSON(http.StatusOK, response.Error("地址不存在"))
+	nativeUrl, err := service.ShortUrlService{}.GetByShortUrl(context.Param("url"))
+	if err != nil {
+		context.JSON(http.StatusOK, response.Error(err.Error()))
 		return
 	}
 	context.Redirect(http.StatusMovedPermanently, nativeUrl)

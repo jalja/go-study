@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"go-short-url/dao"
 	"go-short-url/model/entity"
 	"go-short-url/model/param"
@@ -24,7 +25,14 @@ func (service ShortUrlService) AddOrUpdate(update *param.UpdateShortUrlParam) st
 	return urlEntity.ShortUrl
 }
 
-func (service ShortUrlService) GetByShortUrl(shortUrl string) string {
+func (service ShortUrlService) GetByShortUrl(shortUrl string) (string, error) {
 	shortEntity := dao.ShortUrlDAO{}.GetBySHortUrl(shortUrl)
-	return shortEntity.NativeUrl
+	if shortEntity == nil {
+		return "", errors.New("该短地址不存在")
+	}
+	validTimeSecond := uint64(shortEntity.UpdatedAt.Unix()) + shortEntity.ValidTime
+	if validTimeSecond < uint64(time.Now().Unix()) {
+		return "", errors.New("该短地址已过期")
+	}
+	return shortEntity.NativeUrl, nil
 }
