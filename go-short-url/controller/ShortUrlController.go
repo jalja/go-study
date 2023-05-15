@@ -15,8 +15,19 @@ type ShortUrlController struct {
 
 func (short *ShortUrlController) Router(router *gin.Engine) {
 	userGroup := router.Group("/shortUrl")
+	userGroup.POST("/getByPage", short.getByPage)
 	userGroup.POST("/addOrUpdate", short.addOrUpdate)
 	userGroup.GET("/turnUrl/:url", short.turnUrl)
+}
+
+func (short *ShortUrlController) getByPage(context *gin.Context) {
+	var param param.ShortUrlParam
+	if err := context.BindJSON(&param); err != nil {
+		context.JSON(http.StatusOK, response.Error("解析入参异常"))
+		return
+	}
+	tools.Log.Error("getByPage,入参=", param)
+	context.JSON(http.StatusOK, response.Success(param))
 }
 
 func (short *ShortUrlController) addOrUpdate(context *gin.Context) {
