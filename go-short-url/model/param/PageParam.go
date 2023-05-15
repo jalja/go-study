@@ -1,6 +1,6 @@
 package param
 
 type PageParam struct {
-	CurrentPage uint
-	PageSize    uint
+	CurrentPage int
+	PageSize    int
 }

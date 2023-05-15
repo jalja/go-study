@@ -19,6 +19,15 @@ type ShortUrlDAO struct {
 		}
 	}
 */
+func (shortDAO ShortUrlDAO) PageList(param *param.ShortUrlParam) int64 {
+	var count int64
+	short := entity.ShortUrlEntity{
+		ShortUrl: param.ShortUrl,
+	}
+	config.DB.Model(&entity.ShortUrlEntity{}).Where(short).Offset(param.CurrentPage).Limit(param.PageSize)
+	return count
+}
+
 func (shortDAO ShortUrlDAO) Count(param *param.ShortUrlParam) int64 {
 	var count int64
 	short := entity.ShortUrlEntity{
