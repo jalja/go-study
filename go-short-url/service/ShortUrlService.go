@@ -12,6 +12,10 @@ import (
 type ShortUrlService struct {
 }
 
+func (service ShortUrlService) PageList(urlParam *param.ShortUrlParam) {
+	count := dao.ShortUrlDAO{}.Count(urlParam)
+	tools.Log.Error("count=", count)
+}
 func (service ShortUrlService) AddOrUpdate(update *param.UpdateShortUrlParam) string {
 	var urlEntity entity.ShortUrlEntity
 	urlEntity.Deleted = 0

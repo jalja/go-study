@@ -3,6 +3,7 @@ package dao
 import (
 	"go-short-url/config"
 	"go-short-url/model/entity"
+	"go-short-url/model/param"
 )
 
 type ShortUrlDAO struct {
@@ -18,6 +19,15 @@ type ShortUrlDAO struct {
 		}
 	}
 */
+func (shortDAO ShortUrlDAO) Count(param *param.ShortUrlParam) int64 {
+	var count int64
+	short := entity.ShortUrlEntity{
+		ShortUrl: param.ShortUrl,
+	}
+	config.DB.Model(&entity.ShortUrlEntity{}).Where(short).Count(&count)
+	return count
+}
+
 func (shortDAO ShortUrlDAO) GetBySHortUrl(shortUrl string) *entity.ShortUrlEntity {
 	var urlEntity entity.ShortUrlEntity
 	config.DB.Where("short_url=?", shortUrl).First(&urlEntity)

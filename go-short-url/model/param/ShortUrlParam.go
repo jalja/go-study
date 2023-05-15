@@ -2,5 +2,6 @@ package param
 
 type ShortUrlParam struct {
 	PageParam
-	userCode string
+	UserCode string
+	ShortUrl string
 }
