@@ -20,6 +20,8 @@ type ShortUrlDAO struct {
 		}
 	}
 */
+
+// PageList 分页查询
 func (shortDAO ShortUrlDAO) PageList(param *param.ShortUrlParam) *response.Pagination {
 	short := entity.ShortUrlEntity{
 		ShortUrl: param.ShortUrl,

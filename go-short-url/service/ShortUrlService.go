@@ -13,6 +13,7 @@ import (
 type ShortUrlService struct {
 }
 
+// PageList 分页查询
 func (service ShortUrlService) PageList(urlParam *param.ShortUrlParam) *response.Pagination {
 	return dao.ShortUrlDAO{}.PageList(urlParam)
 }
