@@ -5,6 +5,7 @@ import (
 	"go-short-url/dao"
 	"go-short-url/model/entity"
 	"go-short-url/model/param"
+	"go-short-url/model/response"
 	"go-short-url/tools"
 	"time"
 )
@@ -12,10 +13,8 @@ import (
 type ShortUrlService struct {
 }
 
-func (service ShortUrlService) PageList(urlParam *param.ShortUrlParam) {
-	count := dao.ShortUrlDAO{}.Count(urlParam)
-	tools.Log.Error("count=", count)
-
+func (service ShortUrlService) PageList(urlParam *param.ShortUrlParam) *response.Pagination {
+	return dao.ShortUrlDAO{}.PageList(urlParam)
 }
 func (service ShortUrlService) AddOrUpdate(update *param.UpdateShortUrlParam) string {
 	var urlEntity entity.ShortUrlEntity

@@ -27,8 +27,7 @@ func (short *ShortUrlController) getByPage(context *gin.Context) {
 		return
 	}
 	tools.Log.Error("getByPage,入参=", param)
-	service.ShortUrlService{}.PageList(&param)
-	context.JSON(http.StatusOK, response.Success(param))
+	context.JSON(http.StatusOK, response.Success(service.ShortUrlService{}.PageList(&param)))
 }
 
 func (short *ShortUrlController) addOrUpdate(context *gin.Context) {

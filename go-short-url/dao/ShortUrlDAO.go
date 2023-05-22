@@ -4,6 +4,7 @@ import (
 	"go-short-url/config"
 	"go-short-url/model/entity"
 	"go-short-url/model/param"
+	"go-short-url/model/response"
 )
 
 type ShortUrlDAO struct {
@@ -19,13 +20,16 @@ type ShortUrlDAO struct {
 		}
 	}
 */
-func (shortDAO ShortUrlDAO) PageList(param *param.ShortUrlParam) int64 {
-	var count int64
+func (shortDAO ShortUrlDAO) PageList(param *param.ShortUrlParam) *response.Pagination {
 	short := entity.ShortUrlEntity{
 		ShortUrl: param.ShortUrl,
 	}
-	config.DB.Model(&entity.ShortUrlEntity{}).Where(short).Offset(param.CurrentPage).Limit(param.PageSize)
-	return count
+	count := shortDAO.Count(param)
+	pagination := response.NewPagination(param.PageSize, param.CurrentPage, param.Sort, int(count))
+	var shortUrlEntity []*entity.ShortUrlEntity
+	config.DB.Model(&entity.ShortUrlEntity{}).Where(short).Offset(pagination.GetOffset()).Limit(pagination.GetLimit()).Order(pagination.GetSort()).Find(&shortUrlEntity)
+	pagination.SetRows(shortUrlEntity)
+	return pagination
 }
 
 func (shortDAO ShortUrlDAO) Count(param *param.ShortUrlParam) int64 {
